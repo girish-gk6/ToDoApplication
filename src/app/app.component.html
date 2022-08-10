@@ -1,0 +1,120 @@
+<nav class="navbar navbar-dark bg-dark">
+  <div class="container-fluid">
+
+
+    <h2 style="margin:10px;padding: 10px;"> To Do List </h2>
+
+  </div>
+</nav>
+
+<div class="col-md-12 mb-2 pt-3 pb-3" style="text-align:right;margin: 15px;">
+  <button mat-raised-button color="primary" (click)="AddToDoList(todoTemplate)">
+    <mat-icon>add_circle</mat-icon> Add
+    New Task
+  </button>
+</div>
+
+<div class="card-body col-md-12">
+  <mat-table [dataSource]="dataSource" class="mat-elevation-z8"
+    style="margin-left: 200px;padding:40px;margin-right: 200px;">
+
+    <!--- Note that these columns can be defined in any order.
+        The actual rendered columns are set as a property on the row definition" -->
+
+    <!-- Position Column -->
+    <ng-container matColumnDef="date">
+      <th mat-header-cell *matHeaderCellDef style="width:10%"> Date </th>
+      <td mat-cell *matCellDef="let element"> {{element.date}} </td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="details">
+      <th mat-header-cell *matHeaderCellDef style="width:10%"> Task </th>
+      <td mat-cell *matCellDef="let element"> {{element.detail}} </td>
+    </ng-container>
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef style="width:10%"> Action </th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-raised-button color="primary" (click)="updateToDoList(element._id,todoEditTemplate)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-raised-button color="primary" style="margin-left:10px;" (click)="deleteToDoList(element._id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </mat-table>
+</div>
+
+<ng-template #todoTemplate>
+  <div class="col-md-12" style="display:inline-flex;width: 100%;">
+    <div class="col-md-10" style="width: 100%;">
+      <h1 mat-dialog-title>Add ToDo List Details</h1>
+    </div>
+    <div class="col-md-2">
+      <button mat-raised-button [mat-dialog-close]="true">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </div>
+  <div mat-dialog-content>
+    <form [formGroup]="todolist">
+      <div class="col-md-12">
+        <div class="col-md-12">
+          <mat-form-field style="width: 500px;">
+            <mat-label>Date</mat-label>
+            <input formControlName="date" placeholder="Date" matInput>
+          </mat-form-field>
+        </div>
+        <div class="col-md-12">
+          <mat-form-field style="width: 500px;">
+            <mat-label>Task</mat-label>
+            <input formControlName="detail" placeholder="Task" matInput>
+          </mat-form-field>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-raised-button color="secondary" [mat-dialog-close]="true">Cancel</button>
+    <button mat-raised-button color="primary" (click)="AddItemsInToDoList()">Add</button>
+  </div>
+</ng-template>
+
+
+<ng-template #todoEditTemplate>
+  <div class="col-md-12" style="display:inline-flex;width: 100%;">
+    <div class="col-md-10" style="width: 100%;">
+      <h1 mat-dialog-title>Update ToDo List Details</h1>
+    </div>
+    <div class="col-md-2">
+      <button mat-raised-button (click)="closeToDoDialog()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </div>
+  <div mat-dialog-content>
+    <form [formGroup]="todolist">
+      <div class="col-md-12">
+        <div class="col-md-12">
+          <mat-form-field style="width: 500px;">
+            <mat-label>Date</mat-label>
+            <input formControlName="date" placeholder="Date" [(ngModel)]="dateEntered" matInput>
+          </mat-form-field>
+        </div>
+        <div class="col-md-12">
+          <mat-form-field style="width: 500px;">
+            <mat-label>Task</mat-label>
+            <input formControlName="detail" placeholder="Task" [(ngModel)]="detailsEntered" matInput>
+          </mat-form-field>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-raised-button color="secondary" (click)="closeToDoDialog()">Cancel</button>
+    <button mat-raised-button color="primary" (click)="updateItemsInToDoList()">Update</button>
+  </div>
+</ng-template>
